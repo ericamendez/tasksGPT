@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useMutation } from "@apollo/client";
-import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries";
+import { ALL_TASKS, EDIT_AUTHOR } from "../queries";
 
-const Authors = (props) => {
+const Tasks = (props) => {
 
   const [selectedAuthor, setSelectedAuthor] = useState('')
   const [birthyear, setBirthyear] = useState('')
@@ -23,11 +23,12 @@ const Authors = (props) => {
     return null
   }
 
-  const authors = props.data.allAuthors
+  const tasks = props.data.allTasks
+  console.log(tasks);
 
   return (
     <div>
-      <h2>authors</h2>
+      <h2>tasks</h2>
       <table>
         <tbody>
           <tr>
@@ -35,11 +36,11 @@ const Authors = (props) => {
             <th>born</th>
             <th>books</th>
           </tr>
-          {authors.map((a) => (
-            <tr key={a.name}>
-              <td>{a.name}</td>
-              <td>{a.born}</td>
-              <td>{a.bookCount}</td>
+          {tasks.map((a) => (
+            <tr key={a.title}>
+              <td>{a.description}</td>
+              <td>{a.priority}</td>
+              <td>{a.status}</td>
             </tr>
           ))}
         </tbody>
@@ -48,4 +49,4 @@ const Authors = (props) => {
   )
 }
 
-export default Authors
+export default Tasks

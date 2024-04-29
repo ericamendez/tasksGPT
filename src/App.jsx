@@ -1,21 +1,17 @@
 import { useState } from 'react'
-import Authors from './components/Authors'
-import NewBook from './components/NewBook'
+import Tasks from './components/Tasks'
+import NewTask from './components/NewTask'
 import { useQuery } from "@apollo/client"
-import { ALL_AUTHORS, ALL_BOOKS } from "./queries"
+import { ALL_TASKS } from "./queries"
 import LoginForm from './components/LoginForm'
 import { useApolloClient } from '@apollo/client'
 
 const App = () => {
   const [token, setToken] = useState(null)
-  const [page, setPage] = useState('authors')
+  const [page, setPage] = useState('tasks')
   const client = useApolloClient()
 
-
-  const resultAuthors = useQuery(ALL_AUTHORS)
-  
-  const resultBooks = useQuery(ALL_BOOKS)
-  
+  const resultTasks = useQuery(ALL_TASKS)  
 
   const logout = () => {
     setToken(null)
@@ -34,17 +30,17 @@ const App = () => {
 
   return (
     <div>
-      <button onClick={logout}>logout</button>
+      <button onClick={logout}>Logout</button>
       <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage('tasks')}>Tasks</button>
+        <button onClick={() => setPage('add')}>Add Tasks</button>
       </div>
-      {resultAuthors.loading ? <div>loading...</div> : null}
-      {resultAuthors.data ? (
-        <Authors data={resultAuthors.data} show={page === 'authors'} />
+      {resultTasks.loading ? <div>loading...</div> : null}
+      {resultTasks.data ? (
+        <Tasks data={resultTasks.data} show={page === 'tasks'} />
       ) : null }
 
-      <NewBook show={page === 'add'} />
+      <NewTask show={page === 'add'} />
     </div>
   )
 }
