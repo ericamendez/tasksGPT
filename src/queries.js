@@ -52,3 +52,11 @@ export const LOGIN = gql`
     }
   }
 `
+
+export const SIGNUP = gql`
+  mutation createUser($username: String!, $password: String!) {
+    createUser(username: $username, password: $password) {
+      username
+    }
+  }
+`
