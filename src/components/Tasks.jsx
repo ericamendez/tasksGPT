@@ -8,10 +8,12 @@ const Tasks = (props) => {
   const [birthyear, setBirthyear] = useState('')
   const [editAuthor, result] = useMutation(EDIT_AUTHOR);
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
 
     editAuthor({ variables: { name: selectedAuthor, born: birthyear } });
+
+    await result.refetch();
 
     setSelectedAuthor("");
     setBirthyear("");
@@ -22,21 +24,20 @@ const Tasks = (props) => {
     return null
   }
 
-  // const tasks = props.data.allTasks
-
   return (
     <div>
       <h2>tasks</h2>
-      { tasks.map(task => <p key={task.id}>{task.title}</p>)}
       <table>
         <tbody>
           <tr>
-            <th></th>
-            <th>title</th>
+            <th>task</th>
             <th>description</th>
+            <th>priority</th>
+            <th>status</th>
           </tr>
           {tasks.map((task) => (
             <tr key={task.id}>
+              <td>{task.title}</td>
               <td>{task.description}</td>
               <td>{task.priority}</td>
               <td>{task.status}</td>
