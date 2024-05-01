@@ -7,7 +7,6 @@ const LoginForm = ({ setError, setToken }) => {
   const [password, setPassword] = useState('')
   const [getSignup, setSignup] = useState(false)
 
-
   const [ login, result ] = useMutation(LOGIN, {
     onError: (error) => {
       console.log('error', error)
@@ -23,6 +22,13 @@ const LoginForm = ({ setError, setToken }) => {
   })
 
   useEffect(() => {
+    const token = localStorage.getItem('library-user-token')
+    if (token) {
+      setToken(token)
+    }
+  }, []) // Empty dependency array ensures this effect runs only once on mount
+
+  useEffect(() => {
     if ( result.data ) {
       const token = result.data.login.value
       setToken(token)
@@ -32,13 +38,11 @@ const LoginForm = ({ setError, setToken }) => {
 
   const submit = async (event) => {
     event.preventDefault()
-
     login({ variables: { username, password } })
   }
 
   const signUpSubmit = async (event) => {
     event.preventDefault()
-
     signup({ variables: { username, password } })
     setSignup(false)
   }
