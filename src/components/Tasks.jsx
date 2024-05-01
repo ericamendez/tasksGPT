@@ -3,10 +3,9 @@ import { useMutation } from "@apollo/client";
 import { ALL_TASKS, EDIT_AUTHOR } from "../queries";
 
 const Tasks = (props) => {
-
+  const [tasks, setTasks] = useState(props.data.allTasks)
   const [selectedAuthor, setSelectedAuthor] = useState('')
   const [birthyear, setBirthyear] = useState('')
-
   const [editAuthor, result] = useMutation(EDIT_AUTHOR);
 
   const submit = (event) => {
@@ -23,24 +22,24 @@ const Tasks = (props) => {
     return null
   }
 
-  const tasks = props.data.allTasks
-  console.log(tasks);
+  // const tasks = props.data.allTasks
 
   return (
     <div>
       <h2>tasks</h2>
+      { tasks.map(task => <p key={task.id}>{task.title}</p>)}
       <table>
         <tbody>
           <tr>
             <th></th>
-            <th>born</th>
-            <th>books</th>
+            <th>title</th>
+            <th>description</th>
           </tr>
-          {tasks.map((a) => (
-            <tr key={a.title}>
-              <td>{a.description}</td>
-              <td>{a.priority}</td>
-              <td>{a.status}</td>
+          {tasks.map((task) => (
+            <tr key={task.id}>
+              <td>{task.description}</td>
+              <td>{task.priority}</td>
+              <td>{task.status}</td>
             </tr>
           ))}
         </tbody>

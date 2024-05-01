@@ -7,6 +7,7 @@ export const ALL_TASKS = gql`
             description
             priority
             status
+            id
         }
     }
 `
