@@ -36,10 +36,6 @@ header .right{
     padding: 12px 15px;
 }
 
-.styled-table td:hover{
-    border: 1px solid rgba(186, 45, 186, 0.2);
-}
-
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
 }
@@ -122,9 +118,6 @@ header .right{
     margin: 0 20px;
 }
 
-.table-container{
-    /* color: rgb(72, 26, 98); */
-}
 .table-container h2{
     margin-left: auto;
     margin-right: auto; 
@@ -139,4 +132,8 @@ header .right{
 
 .task-title{
     font-weight: 700;
+}
+
+.task-desc:hover{
+    border: 1px solid rgba(186, 45, 186, 0.2);
 }

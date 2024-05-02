@@ -85,6 +85,7 @@ const Tasks = (props) => {
                 </td>
                 <td className='task-title'>{task.title}</td>
                 <td
+                  className='task-desc'
                   ref={ref} 
                   contentEditable 
                   onClick={() => handleClickEvent(task.description, task.id)}

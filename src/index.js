@@ -5,7 +5,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@ap
 import { setContext } from '@apollo/client/link/context'
 
 const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem('library-user-token')
+    const token = localStorage.getItem('tasks-token')
     return {
       headers: {
         ...headers,
@@ -14,9 +14,11 @@ const authLink = setContext((_, { headers }) => {
     }
   })
 
-const httpLink = createHttpLink({
-  uri: 'http://localhost:4001/graphql',
-})
+  const httpLink = createHttpLink({
+    uri: 'http://localhost:4001/graphql',
+  });
+  // https://tasksgpt.onrender.com/graphql
+  //'http://localhost:4001/graphql',
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
