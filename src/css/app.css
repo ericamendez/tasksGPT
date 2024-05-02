@@ -64,14 +64,14 @@ header .right{
     text-align: center;
 }
 
-.task-form{
+.task-form, .signup-form, .login-form{
     background-color: #eee5f0;
     margin: 5%;
     padding: 5% 10%;
     text-align: center;
 }
 
-.task-form div{
+.task-form div, .signup-form div, .login-form div{
     margin-bottom: 50px;
 }
 
@@ -79,7 +79,9 @@ header .right{
     text-align: left;
 }
 
-.task-form input{
+.task-form input,
+.signup-form input,
+.login-form input{
     padding:10px;
     border-radius: 8px;
     border: none;
@@ -98,4 +100,27 @@ header .right{
     border-radius: 8px;
     border: none;
 
+}
+
+.complete-task{
+    color: rgb(184, 184, 184);
+}
+
+.logout{
+    border-radius: 10px;
+    padding: 10px 15px;
+    background-color: rgb(72, 26, 98);
+    color: white;
+    font-weight: 600;
+    border: none;
+    margin: 0 20px;
+}
+
+.table-container{
+    /* color: rgb(72, 26, 98); */
+}
+
+.left {
+    font-weight: 800;
+    color: rgb(72, 26, 98);
 }

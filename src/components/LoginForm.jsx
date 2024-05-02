@@ -5,7 +5,7 @@ import { LOGIN, SIGNUP } from '../queries'
 const LoginForm = ({ setError, setToken }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [getSignup, setSignup] = useState(false)
+  const [getSignup, setGetSignup] = useState(false)
 
   const [ login, result ] = useMutation(LOGIN, {
     onError: (error) => {
@@ -45,34 +45,36 @@ const LoginForm = ({ setError, setToken }) => {
   const signUpSubmit = async (event) => {
     event.preventDefault()
     signup({ variables: { username, password } })
-    setSignup(false)
+    setGetSignup(false)
   }
 
   return (
     <div>
       {!getSignup ? 
-        <div>
+        <div className='signup-form'>
+          <h2>Log In</h2>
           <form onSubmit={submit}>
             <div>
-              username <input
+              Username: <input
                 value={username}
                 onChange={({ target }) => setUsername(target.value)}
               />
             </div>
             <div>
-              password <input
+              Password: <input
                 type='password'
                 value={password}
                 onChange={({ target }) => setPassword(target.value)}
               />
             </div>
-            <button type='submit'>login</button>
+            <button className='tasks-button' type='submit'>login</button>
           </form>
-          <button onClick={() => setSignup(true)}>Sign Up</button>
+          <button className='tasks-button' onClick={() => setGetSignup(true)}>Sign Up</button>
         </div> 
         : 
         <div>
-          <div>
+          <div className='login-form'>
+          <h2>Sign Up</h2>
           <form onSubmit={signUpSubmit}>
             <div>
               username <input
@@ -87,8 +89,9 @@ const LoginForm = ({ setError, setToken }) => {
                 onChange={({ target }) => setPassword(target.value)}
               />
             </div>
-            <button type='submit'>signup</button>
+            <button className='tasks-button' type='submit'>signup</button>
           </form>
+          <button className='tasks-button' onClick={() =>setGetSignup(false)}>login</button>
         </div> 
         </div>
       }

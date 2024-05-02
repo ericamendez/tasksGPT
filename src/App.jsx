@@ -37,7 +37,7 @@ const App = () => {
           Welcome {user.charAt(0).toUpperCase() + user.substring(1)}
         </div>
         <div className='right'>
-          <button onClick={logout}>Logout</button>
+          <button className="logout" onClick={logout}>Logout</button>
         </div>
       </header>
       <div className='button-container'>

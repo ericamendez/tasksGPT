@@ -1,25 +1,60 @@
-import { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useMutation } from "@apollo/client";
-import { ALL_TASKS, EDIT_AUTHOR } from "../queries";
+import { ALL_TASKS, EDIT_COMPLETE, EDIT_DESCRIPTION} from "../queries";
+import useClickOutside from './customHooks/useClickOutside';
 
 const Tasks = (props) => {
-  const [tasks, setTasks] = useState(props.data.allTasks)
-  const [selectedAuthor, setSelectedAuthor] = useState('')
-  const [birthyear, setBirthyear] = useState('')
-  const [editAuthor, result] = useMutation(EDIT_AUTHOR);
+  const [editComplete, result] = useMutation(EDIT_COMPLETE, {
+    onCompleted: () => {
+      console.log('Complete toggle')
+    },
+    refetchQueries: [{ query: ALL_TASKS }],
+    onError: (error) => {
+      console.log(error)
+    }
+  });
 
-  const submit = async (event) => {
-    event.preventDefault();
+  const [editDescription, descResult] = useMutation(EDIT_DESCRIPTION, {
+    onCompleted: () => {
+      console.log('description saved')
+    },
+    refetchQueries: [{ query: ALL_TASKS }],
+    onError: (error) => {
+      console.log(error)
+    }
+  });
 
-    editAuthor({ variables: { name: selectedAuthor, born: birthyear } });
+  const [isEditingDesc, setIsEditinDesc] = useState(false)
+  const [descEdit, setDescEdit] = useState('')
+  const [currentTask, setCurrentTask] = useState('')
+  
+  const ref = useRef(null);
+  const user = localStorage.getItem('user')
+  const userTasks = props.data.allTasks.filter(task => task.user === user);
 
-    await result.refetch();
 
-    setSelectedAuthor("");
-    setBirthyear("");
+  const checkClicked = async (id, complete) => {
+    editComplete({ variables: { taskID: id, complete: !complete } });
   };
 
+  const handleClickOutside = () => {
+    if(!isEditingDesc){
+      return
+    }
+    setIsEditinDesc(false);
+    setCurrentTask('')
+    //query EDIT_DESCRIPTION
+    editDescription({ variables: { taskID: currentTask, description: descEdit}})
+  };
 
+  useClickOutside(ref, handleClickOutside);
+
+  const handleClickEvent = (desc, id) => {
+    setIsEditinDesc(!isEditingDesc)
+    setDescEdit(desc)
+    setCurrentTask(id)
+  }
+  
   if (!props.show) {
     return null
   }
@@ -38,14 +73,25 @@ const Tasks = (props) => {
           </tr>
         </thead>
         <tbody>
-          {tasks.map((task) => (
-            <tr key={task.id}>
-              <td><input type="checkbox" />    &nbsp;   </td>
-              <td>{task.title}</td>
-              <td>{task.description}</td>
-              <td>{task.priority}</td>
-              <td>{task.status}</td>
-            </tr>
+          {userTasks.map((task) => (
+            <React.Fragment key={task.id}>
+              <tr className={task.complete ? 'complete-task': null}>
+                <td><input type="checkbox" onClick={() => checkClicked(task.id, task.complete)} /></td>
+                <td>{task.title}</td>
+                <td>
+                  <div 
+                    ref={ref} 
+                    contentEditable 
+                    onClick={() => handleClickEvent(task.description, task.id)}
+                    onInput={({ target }) => setDescEdit(target.innerText)}
+                  >
+                    {task.description}
+                  </div>
+                </td>
+                <td>{task.priority}</td>
+                <td>{task.status}</td>
+              </tr>
+            </React.Fragment>
           ))}
         </tbody>
       </table>

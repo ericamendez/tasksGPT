@@ -8,29 +8,38 @@ export const ALL_TASKS = gql`
             priority
             status
             id
+            user
+            complete
         }
     }
 `
 
 export const ADD_TASK = gql`
-    mutation addTask($title: String!, $description: String, $priority: String, $status: String) {
-        addTask(title: $title, description: $description, priority: $priority, status: $status) {
+    mutation addTask($title: String!, $description: String, $priority: String, $status: String, $user: String!, $complete: Boolean) {
+        addTask(title: $title, description: $description, priority: $priority, status: $status, user: $user, complete: $complete) {
             title
             description
             id
             priority
             status
+            user
+            complete
         }
     }
 `
 
-export const EDIT_AUTHOR = gql`
-  mutation editAuthor($name: String!, $born: Int!) {
-    editBorn(name: $name, born: $born) {
-      name
-      born
-      bookCount
-      id
+export const EDIT_COMPLETE = gql`
+  mutation editComplete($taskID: String!, $complete: Boolean) {
+    editComplete(id: $taskID, complete: $complete) {
+      complete
+    }
+  }
+`
+
+export const EDIT_DESCRIPTION = gql`
+  mutation editDescription($taskID: String!, $description: String) {
+    editDescription(id: $taskID, description: $description) {
+      description
     }
   }
 `

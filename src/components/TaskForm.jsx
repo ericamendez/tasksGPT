@@ -5,6 +5,8 @@ import { ADD_TASK, ALL_TASKS } from "../queries"
 const TaskForm = (props) => {
 
   const { refetch } = useQuery(ALL_TASKS);
+  const user = localStorage.getItem('user')
+
 
   const [addTask] = useMutation(ADD_TASK, {
     onCompleted: () => {
@@ -29,7 +31,7 @@ const TaskForm = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    await addTask({ variables: { title, description, priority, status } })
+    await addTask({ variables: { title, description, priority, status, user, complete: false } })
 
     // After adding the task, clear the form fields
     setTitle('')
