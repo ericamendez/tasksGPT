@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
-import { ADD_TASK, ALL_TASKS } from "../queries"
+import { ADD_TASK, ALL_TASKS, AUTOGENERATE } from "../queries"
 
 const TaskForm = (props) => {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [priority, setPriority] = useState('low')
+  const [status, setStatus] = useState('Not Started')
 
   const { refetch } = useQuery(ALL_TASKS);
   const user = localStorage.getItem('user')
-
 
   const [addTask] = useMutation(ADD_TASK, {
     onCompleted: () => {
@@ -19,14 +22,28 @@ const TaskForm = (props) => {
     },
   });
 
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [priority, setPriority] = useState('low')
-  const [status, setStatus] = useState('Not Started')
+  const [autogenerate] = useMutation(AUTOGENERATE, {
+    onCompleted: () => {
+      console.log('Queried ChatGPT')
+      refetch();
+    },
+    refetchQueries: [{ query: ALL_TASKS }],
+    onError: (error) => {
+      console.log(error)
+    },
+  });
 
+  
+
+  const handleAutogenerate = async() => {
+    const text = await autogenerate({variables: {title}})
+    setDescription(text.data.autogenerate)
+  }
+  
   if (!props.show) {
     return null
   }
+  
 
   const submit = async (event) => {
     event.preventDefault()
@@ -40,20 +57,24 @@ const TaskForm = (props) => {
     setStatus('Not Started')
   }
 
+
   return (
     <div className='task-form'>
       <h2>Add a Task</h2>
+      <h4>Brainstorm with ChatGPT</h4>
+      <button className='tasks-button' onClick={handleAutogenerate}>Autogenerate Description</button>
       <form onSubmit={submit}>
         <div>
-          <label>Title: </label>
+          <label>Title*: </label>
           <input
             value={title}
+            required
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div className='desc-container'>
           <label>Description: </label>
-          <p>*Brainstorm with ChatGPT, leave blank and chat GPT will generate a description for you to get you started</p>
+          <p>*Leave description blank and chat GPT will generate a description for you to get you started</p>
           <textarea
             value={description}
             onChange={({ target }) => setDescription(target.value)}

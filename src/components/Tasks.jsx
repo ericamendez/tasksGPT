@@ -76,17 +76,21 @@ const Tasks = (props) => {
           {userTasks.map((task) => (
             <React.Fragment key={task.id}>
               <tr className={task.complete ? 'complete-task': null}>
-                <td><input type="checkbox" onClick={() => checkClicked(task.id, task.complete)} /></td>
-                <td>{task.title}</td>
                 <td>
-                  <div 
-                    ref={ref} 
-                    contentEditable 
-                    onClick={() => handleClickEvent(task.description, task.id)}
-                    onInput={({ target }) => setDescEdit(target.innerText)}
-                  >
+                  {task.complete ? (
+                    <input type="checkbox" checked onClick={() => checkClicked(task.id, task.complete)}/>
+                  ) : 
+                    (<input type="checkbox" onClick={() => checkClicked(task.id, task.complete)}/>)
+                  }
+                </td>
+                <td>{task.title}</td>
+                <td
+                  ref={ref} 
+                  contentEditable 
+                  onClick={() => handleClickEvent(task.description, task.id)}
+                  onInput={({ target }) => setDescEdit(target.innerText)}
+                >
                     {task.description}
-                  </div>
                 </td>
                 <td>{task.priority}</td>
                 <td>{task.status}</td>

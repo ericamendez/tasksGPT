@@ -13,6 +13,11 @@ export const ALL_TASKS = gql`
         }
     }
 `
+export const AUTOGENERATE = gql`
+  mutation Autogenerate($title: String!) {
+    autogenerate(title: $title)
+  }
+`
 
 export const ADD_TASK = gql`
     mutation addTask($title: String!, $description: String, $priority: String, $status: String, $user: String!, $complete: Boolean) {

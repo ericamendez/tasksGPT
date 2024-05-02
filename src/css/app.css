@@ -21,6 +21,8 @@ header .right{
     font-family: sans-serif;
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    margin-left: auto;
+    margin-right: auto; 
 }
 
 .styled-table thead tr {
@@ -32,6 +34,10 @@ header .right{
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
+}
+
+.styled-table td:hover{
+    border: 1px solid rgba(186, 45, 186, 0.2);
 }
 
 .styled-table tbody tr {
@@ -118,6 +124,12 @@ header .right{
 
 .table-container{
     /* color: rgb(72, 26, 98); */
+}
+.table-container h2{
+    margin-left: auto;
+    margin-right: auto; 
+    margin-top: 50px;
+    text-align: center;
 }
 
 .left {
