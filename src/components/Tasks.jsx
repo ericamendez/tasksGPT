@@ -83,7 +83,7 @@ const Tasks = (props) => {
                     (<input type="checkbox" onClick={() => checkClicked(task.id, task.complete)}/>)
                   }
                 </td>
-                <td>{task.title}</td>
+                <td className='task-title'>{task.title}</td>
                 <td
                   ref={ref} 
                   contentEditable 

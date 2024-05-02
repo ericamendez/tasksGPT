@@ -136,3 +136,7 @@ header .right{
     font-weight: 800;
     color: rgb(72, 26, 98);
 }
+
+.task-title{
+    font-weight: 700;
+}
