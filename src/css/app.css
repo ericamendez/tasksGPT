@@ -137,3 +137,13 @@ header .right{
 .task-desc:hover{
     border: 1px solid rgba(186, 45, 186, 0.2);
 }
+
+.clear-button{
+    border-radius: 10px;
+    padding: 10px 15px;
+    background-color: rgb(234, 141, 200);
+    color: white;
+    font-weight: 600;
+    border: none;
+    margin: 0 20px;
+}

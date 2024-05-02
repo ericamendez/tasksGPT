@@ -64,3 +64,9 @@ export const SIGNUP = gql`
     }
   }
 `
+
+export const DELETE_COMPLETED_TASKS = gql`
+  mutation {
+    deleteCompletedTasks
+  }
+`;

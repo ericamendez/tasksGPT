@@ -15,7 +15,7 @@ const authLink = setContext((_, { headers }) => {
   })
 
   const httpLink = createHttpLink({
-    uri: 'http://localhost:4001/graphql',
+    uri: 'https://tasksgpt.onrender.com/graphql',
   });
   // https://tasksgpt.onrender.com/graphql
   //'http://localhost:4001/graphql',

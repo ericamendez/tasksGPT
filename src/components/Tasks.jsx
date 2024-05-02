@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useMutation } from "@apollo/client";
 import { ALL_TASKS, EDIT_COMPLETE, EDIT_DESCRIPTION} from "../queries";
 import useClickOutside from './customHooks/useClickOutside';
+import DeleteCompletedTasksButton from './DeleteCompletedTasksButton';
 
 const Tasks = (props) => {
   const [editComplete, result] = useMutation(EDIT_COMPLETE, {
@@ -100,6 +101,7 @@ const Tasks = (props) => {
           ))}
         </tbody>
       </table>
+      <DeleteCompletedTasksButton />
     </div>
   )
 }
