@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import Tasks from './components/Tasks'
-import NewTask from './components/NewTask'
+import TaskForm from './components/TaskForm'
 import { useQuery } from "@apollo/client"
 import { ALL_TASKS } from "./queries"
 import LoginForm from './components/LoginForm'
 import { useApolloClient } from '@apollo/client'
+import './css/app.css'
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -26,21 +27,29 @@ const App = () => {
       </>
     )
   }
-  
 
+  const user = localStorage.getItem('user')
+  
   return (
     <div>
-      <button onClick={logout}>Logout</button>
-      <div>
-        <button onClick={() => setPage('tasks')}>Tasks</button>
-        <button onClick={() => setPage('add')}>Add Tasks</button>
+      <header>
+        <div className='left'>
+          Welcome {user.charAt(0).toUpperCase() + user.substring(1)}
+        </div>
+        <div className='right'>
+          <button onClick={logout}>Logout</button>
+        </div>
+      </header>
+      <div className='button-container'>
+        <button className="tasks-button" onClick={() => setPage('tasks')}>Tasks</button>
+        <button className="tasks-button" onClick={() => setPage('add')}>Add Tasks</button>
       </div>
       {resultTasks.loading ? <div>loading...</div> : null}
       {resultTasks.data ? (
         <Tasks data={resultTasks.data} show={page === 'tasks'} />
       ) : null }
 
-      <NewTask show={page === 'add'} />
+      <TaskForm show={page === 'add'} />
     </div>
   )
 }

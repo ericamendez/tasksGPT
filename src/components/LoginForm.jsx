@@ -22,7 +22,7 @@ const LoginForm = ({ setError, setToken }) => {
   })
 
   useEffect(() => {
-    const token = localStorage.getItem('library-user-token')
+    const token = localStorage.getItem('tasks-token')
     if (token) {
       setToken(token)
     }
@@ -32,7 +32,8 @@ const LoginForm = ({ setError, setToken }) => {
     if ( result.data ) {
       const token = result.data.login.value
       setToken(token)
-      localStorage.setItem('library-user-token', token)
+      localStorage.setItem('tasks-token', token)
+      localStorage.setItem('user', username)
     }
   }, [result.data])
 

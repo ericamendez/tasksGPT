@@ -25,18 +25,22 @@ const Tasks = (props) => {
   }
 
   return (
-    <div>
-      <h2>tasks</h2>
-      <table>
-        <tbody>
+    <div className='table-container'>
+      <h2>My Tasks</h2>
+      <table className="styled-table">
+        <thead>
           <tr>
+            <th>complete?</th>
             <th>task</th>
             <th>description</th>
             <th>priority</th>
             <th>status</th>
           </tr>
+        </thead>
+        <tbody>
           {tasks.map((task) => (
             <tr key={task.id}>
+              <td><input type="checkbox" />    &nbsp;   </td>
               <td>{task.title}</td>
               <td>{task.description}</td>
               <td>{task.priority}</td>
