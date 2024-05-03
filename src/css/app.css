@@ -148,7 +148,10 @@ header .right{
     margin: 0 20px;
 }
 
+.priority-text, .status-text{
+    padding: 5px;
+}
+
 .priority-text:hover , .status-text:hover{
     border-bottom: 2px solid rgba(186, 45, 186, 0.2);
-    padding: 5px;
 }
