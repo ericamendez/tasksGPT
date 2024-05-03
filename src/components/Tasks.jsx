@@ -75,11 +75,13 @@ const Tasks = (props) => {
     if(isEditPriority){
       setCurrentTask('')
       setIsEditPriority(false)
+      setIsEditStatus(false)
       return
     }
     if(isEditStatus){
       setCurrentTask('')
       setIsEditStatus(false)
+      setIsEditPriority(false)
       return
     }
     //query EDIT_DESCRIPTION
@@ -101,6 +103,7 @@ const Tasks = (props) => {
   const handlePriorityDropdownShow = (id) => {
     setIsEditPriority(true)
     setCurrentTask(id)
+    setIsEditStatus(false)
   }
   
   const handlePrioritySelect = async (e) => {
@@ -116,6 +119,7 @@ const Tasks = (props) => {
   const handleStatusDropdownShow = (id) => {
     setIsEditStatus(true)
     setCurrentTask(id)
+    setIsEditPriority(false)
   }
   
   const handleStatusSelect = async (e) => {
@@ -171,14 +175,14 @@ const Tasks = (props) => {
                     <select name="priority" onChange={handlePrioritySelect} defaultValue={task.priority}>
                       {priorityOptions.map((option, index) => <option key={index} value={option}>{option}</option>)}
                     </select>
-                  ) : task.priority}
+                  ) : <p className='priority-text'>{task.priority}</p>}
                 </td>
                 <td onClick={() => handleStatusDropdownShow(task.id)}>
                   {isEditStatus && currentTask === task.id ? (
                     <select name="status" onChange={handleStatusSelect} defaultValue={task.status}>
                       {statusOptions.map((option, index) => <option key={index} value={option} selected>{option}</option>)}
                     </select>
-                  ) : task.status}
+                  ) : <p className='status-text'>{task.status}</p>}
                 </td>
               </tr>
             </React.Fragment>
