@@ -1,11 +1,17 @@
 import React, { useRef, useState } from 'react'
 import { useMutation } from "@apollo/client";
-import { ALL_TASKS, EDIT_COMPLETE, EDIT_DESCRIPTION} from "../queries";
+import { 
+  ALL_TASKS, 
+  EDIT_COMPLETE, 
+  EDIT_DESCRIPTION,
+  EDIT_PRIORITY,
+  EDIT_STATUS
+} from "../queries";
 import useClickOutside from './customHooks/useClickOutside';
 import DeleteCompletedTasksButton from './DeleteCompletedTasksButton';
 
 const Tasks = (props) => {
-  const [editComplete, result] = useMutation(EDIT_COMPLETE, {
+  const [editComplete] = useMutation(EDIT_COMPLETE, {
     onCompleted: () => {
       console.log('Complete toggle')
     },
@@ -15,7 +21,7 @@ const Tasks = (props) => {
     }
   });
 
-  const [editDescription, descResult] = useMutation(EDIT_DESCRIPTION, {
+  const [editDescription] = useMutation(EDIT_DESCRIPTION, {
     onCompleted: () => {
       console.log('description saved')
     },
@@ -25,14 +31,38 @@ const Tasks = (props) => {
     }
   });
 
+  const [editPriority] = useMutation(EDIT_PRIORITY, {
+    onCompleted: () => {
+      console.log('priority saved')
+    },
+    refetchQueries: [{ query: ALL_TASKS }],
+    onError: (error) => {
+      console.log(error)
+    }
+  });
+
+  const [editStatus] = useMutation(EDIT_STATUS, {
+    onCompleted: () => {
+      console.log('status saved')
+    },
+    refetchQueries: [{ query: ALL_TASKS }],
+    onError: (error) => {
+      console.log(error)
+    }
+  });
+
   const [isEditingDesc, setIsEditinDesc] = useState(false)
+  const [isEditPriority, setIsEditPriority] = useState(false)
   const [descEdit, setDescEdit] = useState('')
   const [currentTask, setCurrentTask] = useState('')
-  
+  const [isEditStatus, setIsEditStatus] = useState(false)
+
+  const priorityOptions = ['Low', 'Medium', 'High']
+  const statusOptions = ['Not Started', 'In Progress', 'Complete']
+
   const ref = useRef(null);
   const user = localStorage.getItem('user')
   const userTasks = props.data.allTasks.filter(task => task.user === user);
-
 
   const checkClicked = async (id, complete) => {
     editComplete({ variables: { taskID: id, complete: !complete } });
@@ -42,18 +72,60 @@ const Tasks = (props) => {
     if(!isEditingDesc){
       return
     }
-    setIsEditinDesc(false);
-    setCurrentTask('')
+    if(isEditPriority){
+      setCurrentTask('')
+      setIsEditPriority(false)
+      return
+    }
+    if(isEditStatus){
+      setCurrentTask('')
+      setIsEditStatus(false)
+      return
+    }
     //query EDIT_DESCRIPTION
     editDescription({ variables: { taskID: currentTask, description: descEdit}})
+    
+    setIsEditinDesc(false);
+    setCurrentTask('')
   };
 
   useClickOutside(ref, handleClickOutside);
 
   const handleClickEvent = (desc, id) => {
+    setIsEditPriority(false)
     setIsEditinDesc(!isEditingDesc)
     setDescEdit(desc)
     setCurrentTask(id)
+  }
+
+  const handlePriorityDropdownShow = (id) => {
+    setIsEditPriority(true)
+    setCurrentTask(id)
+  }
+  
+  const handlePrioritySelect = async (e) => {
+    const selectedIndex = e.target.options.selectedIndex
+    const val = e.target.options[selectedIndex].value
+    
+    editPriority({ variables: { taskID: currentTask, priority: val }})
+    
+    setIsEditPriority(false)
+    setCurrentTask('')
+  }
+
+  const handleStatusDropdownShow = (id) => {
+    setIsEditStatus(true)
+    setCurrentTask(id)
+  }
+  
+  const handleStatusSelect = async (e) => {
+    const selectedIndex = e.target.options.selectedIndex
+    const val = e.target.options[selectedIndex].value
+    
+    editStatus({ variables: { taskID: currentTask, status: val }})
+    
+    setIsEditStatus(false)
+    setCurrentTask('')
   }
   
   if (!props.show) {
@@ -94,8 +166,20 @@ const Tasks = (props) => {
                 >
                     {task.description}
                 </td>
-                <td>{task.priority}</td>
-                <td>{task.status}</td>
+                <td onClick={() => handlePriorityDropdownShow(task.id)}>
+                  {isEditPriority && currentTask === task.id ? (
+                    <select name="priority" onChange={handlePrioritySelect} defaultValue={task.priority}>
+                      {priorityOptions.map((option, index) => <option key={index} value={option}>{option}</option>)}
+                    </select>
+                  ) : task.priority}
+                </td>
+                <td onClick={() => handleStatusDropdownShow(task.id)}>
+                  {isEditStatus && currentTask === task.id ? (
+                    <select name="status" onChange={handleStatusSelect} defaultValue={task.status}>
+                      {statusOptions.map((option, index) => <option key={index} value={option} selected>{option}</option>)}
+                    </select>
+                  ) : task.status}
+                </td>
               </tr>
             </React.Fragment>
           ))}

@@ -97,7 +97,7 @@ header .right{
     border: none;
 }
 
-.task-form select{
+.task-form select, .styled-table select{
     padding: 2px 5px;
     border-radius: 8px;
     border: none;

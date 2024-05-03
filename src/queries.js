@@ -49,6 +49,22 @@ export const EDIT_DESCRIPTION = gql`
   }
 `
 
+export const EDIT_PRIORITY = gql`
+  mutation editPriority($taskID: String!, $priority: String) {
+    editPriority(id: $taskID, priority: $priority) {
+      priority
+    }
+  }
+`
+
+export const EDIT_STATUS = gql`
+  mutation editStatus($taskID: String!, $status: String) {
+    editStatus(id: $taskID, status: $status) {
+      status
+    }
+  }
+`
+
 export const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
     login(username: $username, password: $password)  {

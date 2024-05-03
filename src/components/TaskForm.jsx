@@ -7,6 +7,9 @@ const TaskForm = (props) => {
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState('low')
   const [status, setStatus] = useState('Not Started')
+  const priorityOptions = ['Low', 'Medium', 'High']
+  const statusOptions = ['Not Started', 'In Progress', 'Complete']
+
 
   const { refetch } = useQuery(ALL_TASKS);
   const user = localStorage.getItem('user')
@@ -83,16 +86,13 @@ const TaskForm = (props) => {
         <div>
           <label>Priority: </label>
           <select name="priority" onChange={({ target }) => setPriority(target.value)}>
-            <option value="low">Low</option>
-            <option value="high">High</option>
+            {priorityOptions.map((option) => (<option key={option} value={option}>{option}</option>))}
           </select>
         </div>
         <div>
           <label>Status: </label>
           <select name="status" onChange={({ target }) => setStatus(target.value)}>
-            <option value="Not Started">Not Started</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Complete">Complete</option>
+            {statusOptions.map((option) => (<option key={option} value={option}>{option}</option>))}
           </select>
         </div>
         <button className='tasks-button' type="submit">create task</button>
